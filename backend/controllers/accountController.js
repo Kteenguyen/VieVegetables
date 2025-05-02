@@ -14,8 +14,10 @@ const authAccount = asyncHandler(async (req, res) => {
   if (account && (await account.matchPassword(password))) {
     res.json({
       _id: account._id,
-      name: account.name,
+      name: account.accountName,
       email: account.email,
+      phone: account.phone,
+      address: account.address,
       isAdmin: account.isAdmin,
       token: generateToken(account._id),
     })
@@ -29,7 +31,7 @@ const authAccount = asyncHandler(async (req, res) => {
 // @route   POST /api/accounts
 // @access  Public
 const registerAccount = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body
+  const { accountName, email, password } = req.body
 
   const accountExists = await Account.findOne({ email })
 
@@ -39,16 +41,20 @@ const registerAccount = asyncHandler(async (req, res) => {
   }
 
   const account = await Account.create({
-    name,
+    accountName,
     email,
     password,
+    phone, 
+    address
   })
 
   if (account) {
     res.status(201).json({
       _id: account._id,
-      name: account.name,
+      accountName: account.accountName,
       email: account.email,
+      phone: account.phone,
+      address: account.address,
       isAdmin: account.isAdmin,
       token: generateToken(account._id),
     })
@@ -67,8 +73,10 @@ const getAccountProfile = asyncHandler(async (req, res) => {
   if (account) {
     res.json({
       _id: account._id,
-      name: account.name,
+      accountName: account.accountName,
       email: account.email,
+      phone: account.phone,
+      address: account.address,
       isAdmin: account.isAdmin,
     })
   } else {
@@ -84,8 +92,10 @@ const updateAccountProfile = asyncHandler(async (req, res) => {
   const account = await Account.findById(req.account._id)
 
   if (account) {
-    account.name = req.body.name || account.name
+    account.accountName = req.body.accountName || account.accountName
     account.email = req.body.email || account.email
+    account.phone = req.body.phone || account.phone
+    account.address = req.body.address || account.address
     if (req.body.password) {
       account.password = req.body.password
     }
@@ -94,8 +104,10 @@ const updateAccountProfile = asyncHandler(async (req, res) => {
 
     res.json({
       _id: updatedAccount._id,
-      name: updatedAccount.name,
+      name: updatedAccount.accountName,
       email: updatedAccount.email,
+      phone: updatedAccount.phone,
+      address: updatedAccount.address,
       isAdmin: updatedAccount.isAdmin,
       token: generateToken(updatedAccount._id),
     })
@@ -149,7 +161,7 @@ const updateAccount = asyncHandler(async (req, res) => {
   const account = await Account.findById(req.params.id)
 
   if (account) {
-    account.name = req.body.name || account.name
+    account.accountName = req.body.accountName || account.accountName
     account.email = req.body.email || account.email
     account.isAdmin = req.body.isAdmin
 
