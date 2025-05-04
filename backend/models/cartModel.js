@@ -1,38 +1,37 @@
-// models/orderModel.js
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-const orderSchema = mongoose.Schema(
+const cartSchema = mongoose.Schema(
   {
-    orderId: {
+    cartId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       auto: true, // Tự động tạo ID
     },
-    customerId: {
+    accountId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Customer', // Tham chiếu đến model Customer
+      ref: 'Account', // Tham chiếu đến model Account
     },
-    orderDate: {
+    createAt: {
       type: Date,
       required: true,
       default: Date.now, // Mặc định thời gian tạo là hiện tại
-    },
-    status: {
-      type: String,
-      required: true,
-      default: 'Pending', // Mặc định trạng thái là Pending
     },
     totalAmount: {
       type: Number,
       required: true,
     },
+    item: [{
+      type: mongoose.Schema.Types.ObjectId,
+      refPath: 'CartItem', // Tham chiếu đến model CartItem
+    }
+    ]
   },
   {
     timestamps: true, // Tự động thêm createdAt và updatedAt
   }
 );
 
-const Order = mongoose.model('Order', orderSchema);
+const Cart = mongoose.model('Cart', cartSchema);
 
-export default Order;
+module.exports = Cart;

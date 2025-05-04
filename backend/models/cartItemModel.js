@@ -1,29 +1,28 @@
-// models/orderModel.js
 import mongoose from 'mongoose';
 
 const orderSchema = mongoose.Schema(
   {
-    orderId: {
+    cartItemId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       auto: true, // Tự động tạo ID
     },
-    customerId: {
+    cartId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
-      ref: 'Customer', // Tham chiếu đến model Customer
+      ref: 'Cart', // Tham chiếu đến model Cart
     },
-    orderDate: {
-      type: Date,
+    accountId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
-      default: Date.now, // Mặc định thời gian tạo là hiện tại
+      ref: 'Account', // Tham chiếu đến model Account
     },
-    status: {
-      type: String,
+    prroductId: {
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
-      default: 'Pending', // Mặc định trạng thái là Pending
+      ref: 'Product', // Tham chiếu đến model Product
     },
-    totalAmount: {
+    quantity: {
       type: Number,
       required: true,
     },
