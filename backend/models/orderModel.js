@@ -1,4 +1,3 @@
-// models/orderModel.js
 import mongoose from 'mongoose';
 
 const orderSchema = mongoose.Schema(
@@ -8,7 +7,7 @@ const orderSchema = mongoose.Schema(
       required: true,
       auto: true, // Tự động tạo ID
     },
-    customerId: {
+    accountId: {
       type: mongoose.Schema.Types.ObjectId,
       required: true,
       ref: 'Customer', // Tham chiếu đến model Customer
