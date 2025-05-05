@@ -8,7 +8,7 @@ const productSchema = new mongoose.Schema({
   },
   categoryId: {
     type: mongoose.Schema.Types.ObjectId,
-    required: true,
+    required: false,
     ref: 'Category', // Tham chiếu đến model Category
   },
   productImage: {

@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs'
 
 const accountSchema = mongoose.Schema(
   {
-
     accountName: {
       type: String,
       required: true,
@@ -15,12 +14,12 @@ const accountSchema = mongoose.Schema(
     },
     phone: {
       type: String,
-      required: true,
+      required: false,
     },
 
     address: {
       type: String,
-      required: true,
+      required: false,
     },
 
     password: {
