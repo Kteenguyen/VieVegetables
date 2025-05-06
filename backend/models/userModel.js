@@ -1,9 +1,9 @@
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
-const accountSchema = mongoose.Schema(
+const userSchema = mongoose.Schema(
   {
-    accountName: {
+    name: {
       type: String,
       required: true,
     },
@@ -12,16 +12,6 @@ const accountSchema = mongoose.Schema(
       required: true,
       unique: true,
     },
-    phone: {
-      type: String,
-      required: false,
-    },
-
-    address: {
-      type: String,
-      required: false,
-    },
-
     password: {
       type: String,
       required: true,
@@ -37,11 +27,11 @@ const accountSchema = mongoose.Schema(
   }
 )
 
-accountSchema.methods.matchPassword = async function (enteredPassword) {
+userSchema.methods.matchPassword = async function (enteredPassword) {
   return await bcrypt.compare(enteredPassword, this.password)
 }
 
-accountSchema.pre('save', async function (next) {
+userSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     next()
   }
@@ -50,6 +40,6 @@ accountSchema.pre('save', async function (next) {
   this.password = await bcrypt.hash(this.password, salt)
 })
 
-const Account = mongoose.model('Account', accountSchema)
+const User = mongoose.model('User', userSchema)
 
-export default Account
+export default User

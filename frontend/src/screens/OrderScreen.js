@@ -9,11 +9,9 @@ import Loader from '../components/Loader'
 import {
   getOrderDetails,
   payOrder,
-  deliverOrder,
 } from '../actions/orderActions'
 import {
   ORDER_PAY_RESET,
-  ORDER_DELIVER_RESET,
 } from '../constants/orderConstants'
 
 const OrderScreen = ({ match, history }) => {
@@ -29,8 +27,6 @@ const OrderScreen = ({ match, history }) => {
   const orderPay = useSelector((state) => state.orderPay)
   const { loading: loadingPay, success: successPay } = orderPay
 
-  const orderDeliver = useSelector((state) => state.orderDeliver)
-  const { loading: loadingDeliver, success: successDeliver } = orderDeliver
 
   const userLogin = useSelector((state) => state.userLogin)
   const { userInfo } = userLogin
@@ -38,7 +34,8 @@ const OrderScreen = ({ match, history }) => {
   if (!loading) {
     //   Calculate prices
     const addDecimals = (num) => {
-      return (Math.round(num * 100) / 100).toFixed(2)
+      const rounded = Math.round(num * 100) / 100;
+      return Number.isInteger(rounded) ? rounded.toString() : rounded.toFixed(2);
     }
 
     order.itemsPrice = addDecimals(
@@ -63,9 +60,8 @@ const OrderScreen = ({ match, history }) => {
       document.body.appendChild(script)
     }
 
-    if (!order || successPay || successDeliver || order._id !== orderId) {
+    if (!order || successPay || order._id !== orderId) {
       dispatch({ type: ORDER_PAY_RESET })
-      dispatch({ type: ORDER_DELIVER_RESET })
       dispatch(getOrderDetails(orderId))
     } else if (!order.isPaid) {
       if (!window.paypal) {
@@ -74,16 +70,13 @@ const OrderScreen = ({ match, history }) => {
         setSdkReady(true)
       }
     }
-  }, [dispatch, orderId, successPay, successDeliver, order])
+  }, [dispatch, orderId, successPay, order])
 
   const successPaymentHandler = (paymentResult) => {
     console.log(paymentResult)
     dispatch(payOrder(orderId, paymentResult))
   }
 
-  const deliverHandler = () => {
-    dispatch(deliverOrder(order))
-  }
 
   return loading ? (
     <Loader />
@@ -110,13 +103,6 @@ const OrderScreen = ({ match, history }) => {
                 {order.shippingAddress.postalCode},{' '}
                 {order.shippingAddress.country}
               </p>
-              {order.isDelivered ? (
-                <Message variant='success'>
-                  Delivered on {order.deliveredAt}
-                </Message>
-              ) : (
-                <Message variant='danger'>Not Delivered</Message>
-              )}
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -125,11 +111,7 @@ const OrderScreen = ({ match, history }) => {
                 <strong>Method: </strong>
                 {order.paymentMethod}
               </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
-              ) : (
-                <Message variant='danger'>Not Paid</Message>
-              )}
+  
             </ListGroup.Item>
 
             <ListGroup.Item>
@@ -155,7 +137,7 @@ const OrderScreen = ({ match, history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x ₹{item.price} = ₹{item.qty * item.price}
+                          {item.qty} x {item.price}đ = {item.qty * item.price}đ
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -174,55 +156,15 @@ const OrderScreen = ({ match, history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Items</Col>
-                  <Col>₹{order.itemsPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Shipping</Col>
-                  <Col>₹{order.shippingPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Tax</Col>
-                  <Col>₹{order.taxPrice}</Col>
+                  <Col>{order.itemsPrice}đ</Col>
                 </Row>
               </ListGroup.Item>
               <ListGroup.Item>
                 <Row>
                   <Col>Total</Col>
-                  <Col>₹{order.totalPrice}</Col>
+                  <Col>{order.totalPrice}đ</Col>
                 </Row>
               </ListGroup.Item>
-              {!order.isPaid && (
-                <ListGroup.Item>
-                  {loadingPay && <Loader />}
-                  {!sdkReady ? (
-                    <Loader />
-                  ) : (
-                    <PayPalButton
-                      amount={order.totalPrice}
-                      onSuccess={successPaymentHandler}
-                    />
-                  )}
-                </ListGroup.Item>
-              )}
-              {loadingDeliver && <Loader />}
-              {userInfo &&
-                userInfo.isAdmin &&
-                order.isPaid &&
-                !order.isDelivered && (
-                  <ListGroup.Item>
-                    <Button
-                      type='button'
-                      className='btn btn-block'
-                      onClick={deliverHandler}
-                    >
-                      Mark As Delivered
-                    </Button>
-                  </ListGroup.Item>
-                )}
             </ListGroup>
           </Card>
         </Col>

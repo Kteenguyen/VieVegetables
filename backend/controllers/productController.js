@@ -4,17 +4,18 @@ import Product from '../models/productModel.js'
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
+
 const getProducts = asyncHandler(async (req, res) => {
   const pageSize = 10
   const page = Number(req.query.pageNumber) || 1
 
   const keyword = req.query.keyword
     ? {
-      name: {
-        $regex: req.query.keyword,
-        $options: 'i',
-      },
-    }
+        name: {
+          $regex: req.query.keyword,
+          $options: 'i',
+        },
+      }
     : {}
 
   const count = await Product.countDocuments({ ...keyword })
@@ -29,7 +30,7 @@ const getProducts = asyncHandler(async (req, res) => {
 // @route   GET /api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
-  const product = await Product.findById(req.params.id) //await Product.findOne({ productId: req.params.id }) 
+  const product = await Product.findById(req.params.id)
 
   if (product) {
     res.json(product)
@@ -58,42 +59,45 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
-  const { productId, productImage, productName, price, unitsOfCalculate, description } = req.body
-
   const product = new Product({
-    productId,
-    productImage,
-    productName,
-    price,
-    unitsOfCalculate,
-    description,
+    name: 'Sample name',
+    price: 0,
+    user: req.user._id,
+    image: '/images/sample.jpg',
+    brand: 'Sample brand',
+    category: 'Sample category',
+    countInStock: 0,
+    description: 'Sample description',
   })
 
   const createdProduct = await product.save()
   res.status(201).json(createdProduct)
 })
 
-
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
 const updateProduct = asyncHandler(async (req, res) => {
   const {
-    productName,
+    name,
     price,
     description,
-    productImage,
-    unitsOfCalculate
+    image,
+    brand,
+    category,
+    countInStock,
   } = req.body
 
   const product = await Product.findById(req.params.id)
 
   if (product) {
-    product.productName = productName || product.productName
-    product.price = price || product.price
-    product.description = description || product.description
-    product.productImage = productImage || product.productImage
-    product.unitsOfCalculate = unitsOfCalculate || product.unitsOfCalculate
+    product.name = name
+    product.price = price
+    product.description = description
+    product.image = image
+    product.brand = brand
+    product.category = category
+    product.countInStock = countInStock
 
     const updatedProduct = await product.save()
     res.json(updatedProduct)
@@ -102,7 +106,6 @@ const updateProduct = asyncHandler(async (req, res) => {
     throw new Error('Product not found')
   }
 })
-
 
 export {
   getProducts,

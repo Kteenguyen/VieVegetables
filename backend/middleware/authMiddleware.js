@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken'
 import asyncHandler from 'express-async-handler'
-import Account from '../models/accountModel.js'
+import User from '../models/userModel.js'
 
 const protect = asyncHandler(async (req, res, next) => {
   let token
@@ -14,7 +14,7 @@ const protect = asyncHandler(async (req, res, next) => {
 
       const decoded = jwt.verify(token, process.env.JWT_SECRET)
 
-      req.account = await Account.findById(decoded.id).select('-password')
+      req.user = await User.findById(decoded.id).select('-password')
 
       next()
     } catch (error) {
@@ -31,7 +31,7 @@ const protect = asyncHandler(async (req, res, next) => {
 })
 
 const admin = (req, res, next) => {
-  if (req.account && req.account.isAdmin) {
+  if (req.user && req.user.isAdmin) {
     next()
   } else {
     res.status(401)
