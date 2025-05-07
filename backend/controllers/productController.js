@@ -4,7 +4,6 @@ import Product from '../models/productModel.js'
 // @desc    Fetch all products
 // @route   GET /api/products
 // @access  Public
-
 const getProducts = asyncHandler(async (req, res) => {
   const pageSize = 10
   const page = Number(req.query.pageNumber) || 1
@@ -59,15 +58,16 @@ const deleteProduct = asyncHandler(async (req, res) => {
 // @route   POST /api/products
 // @access  Private/Admin
 const createProduct = asyncHandler(async (req, res) => {
+  const { name, price, image, brand, countInStock, description } = req.body
+
   const product = new Product({
-    name: 'Sample name',
-    price: 0,
-    user: req.user._id,
-    image: '/images/sample.jpg',
-    brand: 'Sample brand',
-    category: 'Sample category',
-    countInStock: 0,
-    description: 'Sample description',
+    name: name || 'Sample Name',
+    price: price || 0,
+    // user: req.user._id,
+    image: image || '/images/sample.jpg',
+    brand: brand || 'Sample Brand',
+    countInStock: countInStock || 0,
+    description: description || 'Sample Description',
   })
 
   const createdProduct = await product.save()

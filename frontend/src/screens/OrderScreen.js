@@ -155,7 +155,7 @@ const OrderScreen = ({ match, history }) => {
               <ListGroup.Item>
                 <Row>
                   <Col>Total price</Col>
-                  <Col>{order.itemsPrice} $</Col>
+                  <Col>{order.totalPrice} $</Col>
                 </Row>
               </ListGroup.Item>
             </ListGroup>
