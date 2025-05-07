@@ -20,7 +20,68 @@ h2 {
   margin: 0.1rem;
 }
 
+/*product card */
+.product-card {
+  width: 250px; /* Fixed width */
+  height: 350px; /* Fixed height */
+  display: flex;
+  flex-direction: column; /* Stack content vertically */
+  justify-content: space-between; /* Space between image and text */
+  align-items: center;
+  overflow: hidden; /* Prevent overflow */
+  margin: 10px auto; /* Center the card */
+  padding: 10px; /* Add padding for spacing */
+  border: 1px solid #000000; /* Optional: Add a border */
+  border-radius: 8px; /* Optional: Add rounded corners */
+  background-color: #ffffff; /* Optional: Add a background color */
+}
+
+.product-card img {
+  width: 100%; 
+  height: 200px; 
+  object-fit: contain; /* Ensure the entire image fits within the container */
+  margin-bottom: 10px; /* Add spacing below the image */
+}
+
+/* nav bar */
+.custom-navbar {
+  background-color: #5FA533;
+}
+
+/* Navbar links */
+.custom-navbar .nav-link {
+  color: #ffffff !important; /* White text for better contrast */
+  font-weight: bold;
+}
+
+.custom-navbar .nav-link:hover {
+  color: #d4f5b0 !important; /* Light green on hover */
+}
+
+/* Search button*/
+.custom-search-btn {
+  background-color: #5FA533; 
+  color: #ffffff; /*  text color */
+  
+  font-weight: bold;
+}
+
+ .custom-search-btn:hover {
+  background-color: #17a31c; 
+  border-color: #17a31c;
+  color: #ffffff; /* White text on hover */
+} 
+
+/*footer*/
+footer {
+  background-color: #5FA533; /* Green background */
+  color: #ffffff; /* White text */
+}
+
 /* carousel */
+.carousel {
+  background-color: #2fbc4b; /* Green background */
+}
 .carousel-item-next,
 .carousel-item-prev,
 .carousel-item.active {

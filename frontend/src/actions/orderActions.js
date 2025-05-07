@@ -18,7 +18,7 @@ import {
   ORDER_LIST_REQUEST,
 } from '../constants/orderConstants'
 import { logout } from './userActions'
-
+// tao don hang
 export const createOrder = (order) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -62,6 +62,7 @@ export const createOrder = (order) => async (dispatch, getState) => {
   }
 }
 
+// lay chi tiet don hang
 export const getOrderDetails = (id) => async (dispatch, getState) => {
   try {
     dispatch({
@@ -99,6 +100,7 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
   }
 }
 
+// thanh toan don hang
 export const payOrder = (orderId, paymentResult) => async (
   dispatch,
   getState
@@ -144,7 +146,7 @@ export const payOrder = (orderId, paymentResult) => async (
   }
 }
 
-
+// lay danh sach don hang cua user
 export const listMyOrders = () => async (dispatch, getState) => {
   try {
     dispatch({
@@ -182,6 +184,7 @@ export const listMyOrders = () => async (dispatch, getState) => {
   }
 }
 
+// lay danh sach tat ca don hang (admin)
 export const listOrders = () => async (dispatch, getState) => {
   try {
     dispatch({

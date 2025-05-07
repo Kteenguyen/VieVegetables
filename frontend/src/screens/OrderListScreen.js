@@ -47,7 +47,7 @@ const OrderListScreen = ({ history }) => {
                 <td>{order._id}</td>
                 <td>{order.user && order.user.name}</td>
                 <td>{order.createdAt.substring(0, 10)}</td>
-                <td>{order.totalPrice}đ</td>
+                <td>{order.totalPrice} $</td>
                 <td>
                   <LinkContainer to={`/order/${order._id}`}>
                     <Button variant='light' className='btn-sm'>
