@@ -25,11 +25,23 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+   
+    // price per kg
     price: {
       type: Number,
       required: true,
       default: 0,
     },
+    weighPerUnit: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
+    // calculationUnit:{
+    //   type: String,
+    //   required: true,
+    //   default: 'kg',
+    // },
     countInStock: {
       type: Number,
       required: true,
