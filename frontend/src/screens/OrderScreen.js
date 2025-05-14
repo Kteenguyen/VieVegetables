@@ -34,12 +34,11 @@ const OrderScreen = ({ match, history }) => {
   if (!loading) {
     //   Calculate prices
     const addDecimals = (num) => {
-      const rounded = Math.round(num * 100) / 100;
-      return Number.isInteger(rounded) ? rounded.toString() : rounded.toFixed(2);
+      (Math.round(num * 100) / 100).toFixed(2); 
     }
 
     order.itemsPrice = addDecimals(
-      order.orderItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+      order.orderItems.reduce((acc, item) => acc + item.price * item.qty* item.weighPerUnit , 0)
     )
   }
 
@@ -123,20 +122,13 @@ const OrderScreen = ({ match, history }) => {
                     <ListGroup.Item key={index}>
                       <Row>
                         <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
+                          <Image src={item.image} alt={item.name} fluid rounded/>
                         </Col>
                         <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
+                          <Link to={`/product/${item.product}`}>{item.name}</Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} $ = {item.qty * item.price} $
+                          {item.qty} x {item.weighPerUnit}kg per tomato x {item.price}$/KG = {(order.totalPrice).toFixed(2)} $
                         </Col>
                       </Row>
                     </ListGroup.Item>

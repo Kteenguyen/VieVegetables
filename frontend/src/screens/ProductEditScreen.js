@@ -16,7 +16,7 @@ const ProductEditScreen = ({ match, history }) => {
   const [price, setPrice] = useState(0)
   const [image, setImage] = useState('')
   const [brand, setBrand] = useState('')
-
+  const [weighPerUnit, setWeighPerUnit] = useState(0)
   const [countInStock, setCountInStock] = useState(0)
   const [description, setDescription] = useState('')
   const [uploading, setUploading] = useState(false)
@@ -44,8 +44,8 @@ const ProductEditScreen = ({ match, history }) => {
         setName(product.name)
         setPrice(product.price)
         setImage(product.image)
+        setWeighPerUnit(product.weighPerUnit)
         setBrand(product.brand)
-
         setCountInStock(product.countInStock)
         setDescription(product.description)
       }
@@ -83,6 +83,7 @@ const ProductEditScreen = ({ match, history }) => {
         name,
         price,
         image,
+        weighPerUnit,
         brand,
         description,
         countInStock,
@@ -122,6 +123,16 @@ const ProductEditScreen = ({ match, history }) => {
                 placeholder='Enter price'
                 value={price}
                 onChange={(e) => setPrice(e.target.value)}
+              ></Form.Control>
+            </Form.Group>
+            
+            <Form.Group controlId='weighPerUnit'>
+              <Form.Label>Weigh Per Unit</Form.Label>
+              <Form.Control
+                type='number'
+                placeholder='Enter Weigh Per Unit'
+                value={weighPerUnit}
+                onChange={(e) => setWeighPerUnit(e.target.value)}
               ></Form.Control>
             </Form.Group>
 

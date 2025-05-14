@@ -14,16 +14,16 @@ const PlaceOrderScreen = ({ history }) => {
   
   //   Calculate prices
   const addDecimals = (num) => {
-    const rounded = Math.round(num * 100) / 100;
-    return Number.isInteger(rounded) ? rounded.toString() : rounded.toFixed(2);
+    return  (Math.round(num * 100) / 100).toFixed(2); 
   }
 
   cart.itemsPrice = addDecimals(
-    cart.cartItems.reduce((acc, item) => acc + item.price * item.qty, 0)
+    cart.cartItems.reduce((acc, item) => acc + item.qty * item.weighPerUnit *item.price, 0)
   )
+  cart.totalPrice = cart.itemsPrice
   // cart.shippingPrice = addDecimals(cart.itemsPrice > 100 ? 0 : 100)
   // cart.taxPrice = addDecimals(Number((0.15 * cart.itemsPrice).toFixed(2)))
-  cart.totalPrice = cart.itemsPrice
+  
 
   const orderCreate = useSelector((state) => state.orderCreate)
   const { order, success, error } = orderCreate
@@ -43,8 +43,8 @@ const PlaceOrderScreen = ({ history }) => {
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
-        shippingPrice: cart.shippingPrice,
-        taxPrice: cart.taxPrice,
+        // shippingPrice: cart.shippingPrice,
+        // taxPrice: cart.taxPrice,
         totalPrice: cart.itemsPrice,
       })
     )
@@ -94,7 +94,7 @@ const PlaceOrderScreen = ({ history }) => {
                           </Link>
                         </Col>
                         <Col md={4}>
-                          {item.qty} x {item.price} $ = {item.qty * item.price} $
+                          {item.qty} x {item.weighPerUnit}kg per unit x {item.price}$/KG = {item.qty * item.price * item.weighPerUnit} $
                         </Col>
                       </Row>
                     </ListGroup.Item>
